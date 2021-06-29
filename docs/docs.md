@@ -1,4 +1,4 @@
-# AES C++ implementation (C stills better)  
+# AES C++ implementation
 
 #### Version 0.0.1(beta)
    @version in testing!!
