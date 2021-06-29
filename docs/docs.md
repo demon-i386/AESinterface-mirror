@@ -12,7 +12,7 @@
 
 ### Bibliography
 	
-  [NIST-article-about-AES] (https://nvlpubs.nist.gov/nistpubs/fips/nist.fips.197.pdf)
+  [NIST-article-about-AES](https://nvlpubs.nist.gov/nistpubs/fips/nist.fips.197.pdf)
 
   [AES operation modes](http://ciit.finki.ukim.mk/data/papers/10CiiT/10CiiT-46.pdf)
 
