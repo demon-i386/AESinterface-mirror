@@ -6,7 +6,10 @@
 ## About
   AES is a block based encryption, 
   we are working with 16-bit blocks at the time.
-
+ 
+### Translations
+  Leia em [PT-BR](#README-pt-br.md)
+  
 ## Installation
   To compile use  `make install `, and then you can run `make run` to execute.
 
