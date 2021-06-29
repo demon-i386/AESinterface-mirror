@@ -5,7 +5,7 @@ DIR=$HOME/local
 .PHONY: install clean
 
 install:
-	@ mkdir -p $HOME/.local/lib
+	@ mkdir -p $(HOME)/.local/lib
 	@ export LD_LIBRARY_PATH=${HOME}/local/lib/:${LD_LIBRARY_PATH}
 	@ cp ./build/libaes.a /usr/local/lib/
 	@ cp ./src/include/aes.hpp /usr/local/include
