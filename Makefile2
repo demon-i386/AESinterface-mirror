@@ -1,0 +1,23 @@
+CC=g++
+CFLAGS=-g -Wall
+
+SRCDIR=src
+LIBDIR=$(SRCDIR)/include
+OBJDIR=$(SRCDIR)/objs
+
+TARGET=main
+
+OBJS=$(patsubst $(LIBDIR)/%.cpp, $(OBJDIR)/%.o, $(wildcard $(LIBDIR)/*.cpp))
+
+.PHONY: install clean
+
+all: install
+
+install: tests/textEncryption.cpp $(OBJS)
+	$(CC) $(CFLAGS) -o $(TARGET) $^
+
+$(OBJDIR)/%.o: $(LIBDIR)/%.c
+	$(CC) $(CFLAGS) -c -o $@ $^
+
+clean:
+	$(RM) -r build/ $(OBJDIR)/*
