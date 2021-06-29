@@ -69,26 +69,27 @@ class AES{
 	public:
 		AES();
 		~AES();
-		void encrypt(char  input[255], uint8_t key[16], int mode);
-		void encrypt(char  input[255], int mode);
-		void decrypt(char* input, uint8_t key[16], int mode);
+		void encrypt(unsigned char  *state, unsigned char *key, int mode);
+		void encrypt(unsigned char  *state, int mode);
+		void decrypt(unsigned char* state, unsigned char* key, int mode);
 	private:
 		// AES modes
-		void encryptCBC(char* input, char* key, char* output);
+		void encryptCBC(char* state, char* key, char* output);
 
 		// AES methods
-		void padding(char *input);
-		void statePlainText(char* input);
-		void keyExpansion(uint8_t key[16], uint8_t* expandedKey);
-		void shiftRows(char* input);
-		void mixColumns(char* input);
-		void invMixColumns(char* input);
-		void subBytes(char* input);
-		void invShiftRows(char* input);
-		void invSubBytes(char* input);
-		void addRoundKey(char* input, uint8_t* key);
-		void executeEncryptionRounds(char* input, uint8_t* key);
-		void executeDecryptionRounds(char* input, uint8_t* key);
-		void rotWord();
-		void subWord();
+		void padding(unsigned char *state);
+		void statePlainText(unsigned char* state);
+		void keyExpansion(unsigned char *key, unsigned char* expandedKey);
+		void shiftRows(unsigned char* state);
+		void mixColumns(unsigned char* state);
+		void invMixColumns(unsigned char* state);
+		void subBytes(unsigned char* state);
+		void invShiftRows(unsigned char* state);
+		void invSubBytes(unsigned char* state);
+		void addRoundKey(unsigned char* state, unsigned char *key);
+		void executeEncryptionRounds(unsigned char* state, unsigned char* key);
+		void executeDecryptionRounds(unsigned char* state, unsigned char* key);
+		void rotWord(unsigned char* key);
+		void subWord(unsigned char* key);
+    unsigned char* generateKey();
 };

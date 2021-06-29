@@ -12,7 +12,7 @@ install:
 
 all: ./src/include/aes.cpp
 	@ mkdir -p build/bin
-	@ $(CC) -c ./src/include/aes.cpp -o ./src/objs/aes.o
+	@ $(CC) -c ./src/include/aes.cpp -o ./src/objs/aes.o -fpermissive
 	@ ar crv libaes.a ./src/objs/aes.o 
 	@ mv libaes.a ./build
 
@@ -21,7 +21,11 @@ shared:
 	@ $(CC) -shared -o ./build/libaes.so ./src/objs/aes.o
 
 clean:
-	@ shred -u ./src/objs/aes.o ./build/libaes.a ./test
+	@ shred -u ./src/objs/*.o ./build/libaes.* 
 
-test: 
+test-shared: 
 	@ $(CC) ./tests/*.cpp -o ./build/bin/main -I ./src/include/ -L ./build/libaes.so
+
+test-static: all
+	@ $(CC) ./tests/*.cpp ./build/libaes.a -o ./build/bin/main 
+	@ ./build/bin/main

@@ -22,19 +22,19 @@
 
 #include "aes.hpp"
 
-void AES::padding(char *input) {
-	int len = (int)strlen(input);
+void AES::padding(unsigned char *state) {
+	int len = sizeof(state);
+	unsigned char *ptr = state;
+
 	while((len % BLOCKLEN) != 0) {
-		strcat(input, "0");
+		realloc(ptr, 1); 
+		strcat(ptr, 0);
 		len++;
 	}
 }
 
-void AES::statePlainText(char* input){
-	
-}
 
-void AES::encryptCBC(char* input, char* key, char* output){
+void AES::encryptCBC(char* state, char* key, char* output){
 	
 }
 
@@ -53,98 +53,115 @@ void AES::keyExpansion(uint8_t key[16], uint8_t* expandedKey){
 
 
 // Key Expansion routine
-void AES::rotWord(){
+void AES::rotWord(unsigned char* key){
 
 }
-void AES::subWord(){
+void AES::subWord(unsigned char* key){
 
 }
 
 
 // Message Encryption
-void AES::shiftRows(char* input){
+void AES::shiftRows(unsigned char* state){
 
 }
-void AES::mixColumns(char* input){
+void AES::mixColumns(unsigned char* state){
 
 }
-void AES::invMixColumns(char* input){  // inverse of MixColumns
-
-}
-
-void AES::subBytes(char* input){ // Byte substituction using sbox (substituction box)
+void AES::invMixColumns(unsigned char* state){  // inverse of MixColumns
 
 }
 
-void AES::invShiftRows(char* input){
-
-}
-void AES::invSubBytes(char* input){
+void AES::subBytes(unsigned char* state){ // Byte substituction using sbox (substituction box)
 
 }
 
-void AES::addRoundKey(char* input, uint8_t* key){ // XOR message - key
+void AES::invShiftRows(unsigned char* state){
+
+}
+void AES::invSubBytes(unsigned char* state){
 
 }
 
-void AES::executeEncryptionRounds(char* input, uint8_t* key){
+void AES::addRoundKey(unsigned char* state, unsigned char* key){ // XOR message - key
+
+}
+
+void AES::executeEncryptionRounds(unsigned char* state, unsigned char* key){
 	for(int i = 0; i < ROUNDS; i++){
-		subBytes(input);
-		shiftRows(input);
-		mixColumns(input);
-		addRoundKey(input, key);
+		subBytes(state);
+		shiftRows(state);
+		mixColumns(state);
+		addRoundKey(state, key);
 	}
 }
 
 // Inverse operation for encryptiom method
-void AES::executeDecryptionRounds(char* input, uint8_t* key){
+void AES::executeDecryptionRounds(unsigned char* state, unsigned char* key){
 	for(int i = 0; i < ROUNDS; i++){
-		invShiftRows(input);
-		invSubBytes(input);
-		invMixColumns(input);
-		addRoundKey(input, key);
+		invShiftRows(state);
+		invSubBytes(state);
+		invMixColumns(state);
+		addRoundKey(state, key);
 	}
 }
 
-void AES::decrypt(char* input, uint8_t key[16], int mode){
+void AES::decrypt(unsigned char* state, unsigned char* key, int mode){
 	
 	// Initial round
-	addRoundKey(input, key);
+	addRoundKey(state, key);
 	
 	// Execute rounds
-	executeDecryptionRounds(input, key);
+	executeDecryptionRounds(state, key);
 
 	// Final round
-	invShiftRows(input);
-	invSubBytes(input);
-	addRoundKey(input, key);
+	invShiftRows(state);
+	invSubBytes(state);
+	addRoundKey(state, key);
 }
 
-void AES::encrypt(char* input, int mode){
+unsigned char* AES::generateKey(){
+	unsigned char key[16];
+	getrandom(key, 16, 0);
+	return key;
+}
+
+void AES::encrypt(unsigned char* state, int mode){
 
 	// Pad message to 16 bytes
-	AES::padding(input);
+	AES::padding(state);
 
 	// Generate a 16 bytes "random" key
-	uint8_t key[16];
-	getrandom(key, 16, 0);
+	unsigned char* key = AES::generateKey();
 
 	// Initial Round
-	AES::addRoundKey(input, key);
+	AES::addRoundKey(state, key);
 
 	// Execute rounds
-	AES::executeEncryptionRounds(input, key);
+	AES::executeEncryptionRounds(state, key);
 
 	// Final Round
-	AES::subBytes(input);
-	AES::shiftRows(input);
-	AES::addRoundKey(input, key);
+	AES::subBytes(state);
+	AES::shiftRows(state);
+	AES::addRoundKey(state, key);
 }
 
-void AES::encrypt(char input[255], uint8_t key[16], int mode){
-	uint8_t* expandedKey;
-	AES::padding(input);
-	AES::keyExpansion(key, expandedKey);
+void AES::encrypt(unsigned char *state, unsigned char *key, int mode){
+	
+	// Pad message to 16 bytes
+	AES::padding(state);
+	
+	// Initial Round
+	AES::addRoundKey(state, key);
+
+	// Execute rounds
+	AES::executeEncryptionRounds(state, key);
+
+	// Final Round
+	AES::subBytes(state);
+	AES::shiftRows(state);
+	AES::addRoundKey(state, key);
+
 }
 
 
